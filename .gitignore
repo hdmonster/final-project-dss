@@ -12,8 +12,8 @@
 /build
 out
 .next
-
 # misc
+final-project-dss.zip
 .DS_Store
 .eslintcache
 .idea
