@@ -15,7 +15,7 @@ export const OverviewMostAssists = (props) => {
             <Typography color="text.secondary" variant="overline">
               Most Assists
             </Typography>
-            <Typography variant="h4">{stats.value}</Typography>
+            <Typography variant="h4">{stats.total}</Typography>
           </Stack>
           <Avatar
             sx={{
@@ -31,7 +31,7 @@ export const OverviewMostAssists = (props) => {
         </Stack>
         <Stack alignItems="center" direction="row" spacing={2} sx={{ mt: 2 }}>
           <Typography color="text.secondary" variant="body">
-            {stats.player}
+            {stats.name}
           </Typography>
         </Stack>
       </CardContent>
@@ -40,8 +40,6 @@ export const OverviewMostAssists = (props) => {
 };
 
 OverviewMostAssists.propTypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
-  value: PropTypes.string.isRequired,
+  stats: PropTypes.object,
   sx: PropTypes.object,
 };

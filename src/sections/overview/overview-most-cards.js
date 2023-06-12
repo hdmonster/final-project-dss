@@ -13,7 +13,7 @@ export const OverviewMostCards = (props) => {
             <Typography color="text.secondary" variant="overline">
               Most Cards
             </Typography>
-            <Typography variant="h4">{stats.value}</Typography>
+            <Typography variant="h4">{stats.total}</Typography>
           </Stack>
           <Avatar
             sx={{
@@ -29,7 +29,7 @@ export const OverviewMostCards = (props) => {
         </Stack>
         <Stack alignItems="center" direction="row" spacing={2} sx={{ mt: 2 }}>
           <Typography color="text.secondary" variant="body">
-            {stats.player}
+            {stats.name}
           </Typography>
         </Stack>
       </CardContent>
@@ -38,6 +38,6 @@ export const OverviewMostCards = (props) => {
 };
 
 OverviewMostCards.propTypes = {
-  value: PropTypes.string,
+  stats: PropTypes.object,
   sx: PropTypes.object,
 };

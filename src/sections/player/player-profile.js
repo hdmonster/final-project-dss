@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-export const PlayerProfile = ({ player, setPlayer }) => (
+export const PlayerProfile = ({ name, position, jerseyNumber }) => (
   <Card>
     <CardContent>
       <Box
@@ -20,17 +20,17 @@ export const PlayerProfile = ({ player, setPlayer }) => (
         }}
       >
         <Avatar
-          src={player.avatar}
+          src={""}
           sx={{
             height: 80,
             mb: 2,
             width: 80,
           }}
         >
-          <Typography variant="h4">{player.jerseyNumber ?? 0}</Typography>
+          <Typography variant="h4">{jerseyNumber == "" ? 0 : jerseyNumber}</Typography>
         </Avatar>
         <Typography gutterBottom variant="h5">
-          {player.firstName ?? "Name"} {player.lastName}
+          {name == "" ? "Name" : name}
         </Typography>
         <Typography color="text.secondary" variant="body2"></Typography>
       </Box>
@@ -38,7 +38,7 @@ export const PlayerProfile = ({ player, setPlayer }) => (
     <Divider />
     <CardActions>
       <Button fullWidth variant="text">
-        {player.position ?? "Position"}
+        {position === "" ? "Position" : position}
       </Button>
     </CardActions>
   </Card>

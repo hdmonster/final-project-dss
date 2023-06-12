@@ -16,10 +16,9 @@ import {
   ListItemText,
   SvgIcon,
 } from "@mui/material";
+import Image from "next/image";
 
-export const OverviewTopTeams = (props) => {
-  const { teams = [], sx } = props;
-
+export const OverviewTopTeams = ({ teams, sx }) => {
   return (
     <Card sx={sx}>
       <CardHeader title="Top Performing Teams" />
@@ -30,15 +29,13 @@ export const OverviewTopTeams = (props) => {
           return (
             <ListItem divider={hasDivider} key={team.id}>
               <ListItemAvatar>
-                {team.image ? (
-                  <Box
-                    component="img"
-                    src={team.image}
-                    sx={{
-                      borderRadius: 1,
-                      height: 48,
-                      width: 48,
-                    }}
+                {team.logoUrl ? (
+                  <Image
+                    alt="img"
+                    src={team.logoUrl}
+                    width={48}
+                    height={48}
+                    style={{ objectFit: "contain" }}
                   />
                 ) : (
                   <Box
@@ -54,7 +51,7 @@ export const OverviewTopTeams = (props) => {
               <ListItemText
                 primary={team.name}
                 primaryTypographyProps={{ variant: "subtitle1" }}
-                secondary={`${team.stats.win}W  ${team.stats.lose}L | Goals: ${team.stats.goals}`}
+                secondary={`${team.matchesWon}W  ${team.matchesLost}L | Goals: ${team.totalGoalsScored}`}
                 secondaryTypographyProps={{ variant: "body2" }}
               />
               <IconButton edge="end">

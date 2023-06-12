@@ -11,6 +11,7 @@ import { PlayersSearch } from "src/sections/player/players-search";
 import { applyPagination } from "src/utils/apply-pagination";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import prisma from "src/lib/prisma";
 
 const usePlayers = (data, page, rowsPerPage) => {
   return useMemo(() => {
@@ -44,7 +45,7 @@ const Page = ({ data }) => {
   return (
     <>
       <Head>
-        <title>Starting Eleven | Club Name</title>
+        <title>Players | Club Name</title>
       </Head>
       <Box
         component="main"
@@ -82,7 +83,7 @@ const Page = ({ data }) => {
                 </Stack>
               </Stack>
               <div>
-                <Link href={"/clubs/" + router.query.id + "/starting-eleven/add"}>
+                <Link href={"/clubs/" + router.query.id + "/players/add"}>
                   <Button
                     startIcon={
                       <SvgIcon fontSize="small">
@@ -117,10 +118,23 @@ const Page = ({ data }) => {
   );
 };
 
-export const getServerSideProps = async ({ req }) => {
-  const now = new Date();
+export const getServerSideProps = async ({ query }) => {
+  const { id } = query;
 
-  const data = [
+  const data = await prisma.player.findMany({
+    where: { clubId: id },
+    include: {
+      _count: {
+        select: {
+          goals: true,
+          assists: true,
+          cards: true,
+        },
+      },
+    },
+  });
+
+  const dataS = [
     {
       id: "5e887ac47eed253091be10cb",
       name: "Carson Darrin",

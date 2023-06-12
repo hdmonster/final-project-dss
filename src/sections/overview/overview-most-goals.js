@@ -13,7 +13,7 @@ export const OverviewMostGoals = (props) => {
             <Typography color="text.secondary" variant="overline">
               Most Goals
             </Typography>
-            <Typography variant="h4">{stats.value}</Typography>
+            <Typography variant="h4">{stats.total}</Typography>
           </Stack>
           <Avatar
             sx={{
@@ -29,7 +29,7 @@ export const OverviewMostGoals = (props) => {
         </Stack>
         <Stack alignItems="center" direction="row" spacing={2} sx={{ mt: 2 }}>
           <Typography color="text.secondary" variant="body">
-            {stats.player}
+            {stats.name}
           </Typography>
         </Stack>
       </CardContent>
@@ -38,8 +38,6 @@ export const OverviewMostGoals = (props) => {
 };
 
 OverviewMostGoals.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
+  stats: PropTypes.object,
   sx: PropTypes.object,
-  value: PropTypes.string.isRequired,
 };

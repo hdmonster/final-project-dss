@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import {
   Box,
   Button,
@@ -11,55 +11,51 @@ import {
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 
-const position = [
+const positions = [
   {
     value: null,
     label: "Select",
   },
   {
-    value: "Goalkeeper",
+    value: "GOALKEEPER",
     label: "Goalkeeper",
   },
   {
-    value: "Outside Back",
+    value: "OUTSIDE_BACK",
     label: "Outside Back",
   },
   {
-    value: "Center Back",
+    value: "CENTER_BACK",
     label: "Center Back",
   },
   {
-    value: "Striker",
+    value: "STRIKER",
     label: "Striker",
   },
   {
-    value: "Second Striker",
+    value: "SECOND_STRIKER",
     label: "Second Striker",
   },
   {
-    value: "Defensive Midfielder",
+    value: "DEFENSIVE_MIDFIELDER",
     label: "Defensive Midfielder",
   },
   {
-    value: "Central Midfielder",
+    value: "CENTRAL_MIDFIELDER",
     label: "Central Midfielder",
   },
   {
-    value: "Winger",
+    value: "WINGER",
     label: "Winger",
   },
 ];
 
-export const PlayerProfileDetails = ({ player, setPlayer }) => {
+export const PlayerProfileDetails = ({ name, position, jerseyNumber, setPlayer, handleSubmit }) => {
   const handleChange = useCallback((event) => {
     setPlayer((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
-  }, []);
-
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
   }, []);
 
   return (
@@ -72,22 +68,12 @@ export const PlayerProfileDetails = ({ player, setPlayer }) => {
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
+                  helperText="Please specify the player name"
+                  label="Name"
+                  name="name"
                   onChange={handleChange}
                   required
-                  value={player.firstName}
-                />
-              </Grid>
-              <Grid xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={player.lastName}
+                  value={name}
                 />
               </Grid>
               <Grid xs={12} md={6}>
@@ -99,9 +85,9 @@ export const PlayerProfileDetails = ({ player, setPlayer }) => {
                   required
                   select
                   SelectProps={{ native: true }}
-                  value={player.position}
+                  value={position}
                 >
-                  {position.map((option) => (
+                  {positions.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
@@ -115,7 +101,7 @@ export const PlayerProfileDetails = ({ player, setPlayer }) => {
                   name="jerseyNumber"
                   onChange={handleChange}
                   required
-                  value={player.jerseyNumber}
+                  value={jerseyNumber}
                 />
               </Grid>
             </Grid>
@@ -123,7 +109,9 @@ export const PlayerProfileDetails = ({ player, setPlayer }) => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end" }}>
-          <Button variant="contained">Save details</Button>
+          <Button variant="contained" type="action">
+            Save details
+          </Button>
         </CardActions>
       </Card>
     </form>

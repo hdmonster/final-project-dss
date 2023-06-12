@@ -13,11 +13,10 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 
 export const ClubCard = (props) => {
   const { club } = props;
-
-  const editPlayerUrl = `/clubs/${club.id}/starting-eleven`;
 
   return (
     <Card
@@ -35,13 +34,19 @@ export const ClubCard = (props) => {
             pb: 3,
           }}
         >
-          <Avatar src={club.logo} variant="square" />
+          <Image
+            alt="Team logo"
+            src={club.logoUrl}
+            width={80}
+            height={80}
+            style={{ objectFit: "contain" }}
+          />
         </Box>
-        <Typography align="center" gutterBottom variant="h5">
-          {club.title}
+        <Typography align="center" gutterBottom variant="h5" sx={{ mt: 2 }}>
+          {club.name}
         </Typography>
         <Typography align="center" variant="body1">
-          12 Players
+          {club._count.players} Players
         </Typography>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
@@ -54,7 +59,7 @@ export const ClubCard = (props) => {
         sx={{ p: 2 }}
       >
         <Stack alignItems="center" direction="row" spacing={1}>
-          <Link href={editPlayerUrl}>
+          <Link href={`/clubs/${club.id}/players`}>
             <Button
               color="inherit"
               startIcon={
@@ -63,7 +68,7 @@ export const ClubCard = (props) => {
                 </SvgIcon>
               }
             >
-              Starting Eleven
+              Players
             </Button>
           </Link>
         </Stack>

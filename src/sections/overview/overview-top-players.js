@@ -25,7 +25,7 @@ const statusMap = {
 };
 
 export const OverviewTopPlayers = (props) => {
-  const { players = [], sx } = props;
+  const { players, sx } = props;
 
   return (
     <Card sx={sx}>
@@ -39,7 +39,7 @@ export const OverviewTopPlayers = (props) => {
                 <TableCell>Position</TableCell>
                 <TableCell>Goals/Assists/Cards</TableCell>
                 <TableCell>Club</TableCell>
-                <TableCell sortDirection="desc">Rating</TableCell>
+                <TableCell sortDirection="desc">Rating (2.0)</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -47,10 +47,8 @@ export const OverviewTopPlayers = (props) => {
                 return (
                   <TableRow hover key={player.id}>
                     <TableCell>{player.name}</TableCell>
-                    <TableCell>{player.position}</TableCell>
-                    <TableCell>
-                      {player.stats.goals}/{player.stats.assists}/{player.stats.cards}
-                    </TableCell>
+                    <TableCell>{player.position.replace(/_/g, " ")}</TableCell>
+                    <TableCell>{player.stats}</TableCell>
                     <TableCell>{player.club}</TableCell>
                     <TableCell>{player.rating}</TableCell>
                   </TableRow>

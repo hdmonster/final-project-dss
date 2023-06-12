@@ -33,6 +33,8 @@ export const PlayersTable = (props) => {
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
 
+  console.log(items);
+
   return (
     <Card>
       <Scrollbar>
@@ -61,36 +63,44 @@ export const PlayersTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((player) => {
-                const isSelected = selected.includes(player.id);
+              {items.length > 0 ? (
+                items.map((player) => {
+                  const isSelected = selected.includes(player.id);
 
-                return (
-                  <TableRow hover key={player.id} selected={isSelected}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(player.id);
-                          } else {
-                            onDeselectOne?.(player.id);
-                          }
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={player.avatar}>{player.jersey_number}</Avatar>
-                        <Typography variant="subtitle2">{player.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{player.position}</TableCell>
-                    <TableCell>{player.goals}</TableCell>
-                    <TableCell>{player.assists}</TableCell>
-                    <TableCell>{player.cards}</TableCell>
-                  </TableRow>
-                );
-              })}
+                  return (
+                    <TableRow hover key={player.id} selected={isSelected}>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={isSelected}
+                          onChange={(event) => {
+                            if (event.target.checked) {
+                              onSelectOne?.(player.id);
+                            } else {
+                              onDeselectOne?.(player.id);
+                            }
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Stack alignItems="center" direction="row" spacing={2}>
+                          <Avatar src={player.avatar}>{player.jerseyNumber}</Avatar>
+                          <Typography variant="subtitle2">{player.name}</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>{player.position.replace(/_/g, " ")}</TableCell>
+                      <TableCell>{player._count.goals}</TableCell>
+                      <TableCell>{player._count.assists}</TableCell>
+                      <TableCell>{player._count.cards}</TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell align="center" colSpan={6}>
+                    No records found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </Box>

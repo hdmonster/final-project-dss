@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
+import Link from "next/link";
 import Head from "next/head";
-import { subDays, subHours } from "date-fns";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
@@ -10,6 +10,7 @@ import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { MatchesTable } from "src/sections/match/matches-table";
 import { MatchesSearch } from "src/sections/match/matches-search";
 import { applyPagination } from "src/utils/apply-pagination";
+import prisma from "src/lib/prisma";
 
 const useMatches = (data, page, rowsPerPage) => {
   return useMemo(() => {
@@ -37,6 +38,8 @@ const Page = ({ data }) => {
   const handleRowsPerPageChange = useCallback((event) => {
     setRowsPerPage(event.target.value);
   }, []);
+
+  console.log(data);
 
   return (
     <>
@@ -79,16 +82,18 @@ const Page = ({ data }) => {
                 </Stack>
               </Stack>
               <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                >
-                  Add
-                </Button>
+                <Link href="/matches/add">
+                  <Button
+                    startIcon={
+                      <SvgIcon fontSize="small">
+                        <PlusIcon />
+                      </SvgIcon>
+                    }
+                    variant="contained"
+                  >
+                    Add
+                  </Button>
+                </Link>
               </div>
             </Stack>
             <MatchesSearch />
@@ -113,38 +118,17 @@ const Page = ({ data }) => {
 };
 
 export const getServerSideProps = async ({ req }) => {
-  const now = new Date();
-
-  const data = [
-    {
-      id: "5e887ac47eed253091be10cb",
-      home: {
-        avatar: null,
-        name: "Real Madrid",
-      },
-      away: {
-        avatar: null,
-        name: "FC Barcelona",
-      },
-      winner: "Home",
-      score: "4-2",
-      datetime: subDays(subHours(now, 7), 1).getTime(),
+  const matches = await prisma.match.findMany({
+    orderBy: [{ date: "desc" }],
+    include: {
+      home: true,
+      away: true,
     },
-    {
-      id: "5e887ac47eed253091be10cx",
-      home: {
-        avatar: null,
-        name: "Man United",
-      },
-      away: {
-        avatar: null,
-        name: "PSG",
-      },
-      winner: "Away",
-      score: "0-2",
-      datetime: subDays(subHours(now, 7), 1).getTime(),
-    },
-  ];
+  });
+  const data = matches.map((match) => ({
+    ...match,
+    date: `${match.date.getDate()}/${match.date.getMonth()}/${match.date.getFullYear()}`,
+  }));
 
   return { props: { data } };
 };

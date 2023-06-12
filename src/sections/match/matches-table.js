@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Scrollbar } from "src/components/scrollbar";
 import { getInitials } from "src/utils/get-initials";
+import { getWinner } from "src/utils/match-winner";
 
 export const MatchesTable = (props) => {
   const {
@@ -63,42 +64,49 @@ export const MatchesTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((match) => {
-                const isSelected = selected.includes(match.id);
-                const datetime = format(match.datetime, "dd/MM/yyyy");
+              {items.length > 0 ? (
+                items.map((match) => {
+                  const isSelected = selected.includes(match.id);
 
-                return (
-                  <TableRow hover key={match.id} selected={isSelected}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(match.id);
-                          } else {
-                            onDeselectOne?.(match.id);
-                          }
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={match.avatar}>{getInitials(match.home.name)}</Avatar>
-                        <Typography variant="subtitle2">{match.home.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={match.avatar}>{getInitials(match.away.name)}</Avatar>
-                        <Typography variant="subtitle2">{match.away.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{match.score}</TableCell>
-                    <TableCell>{match.winner}</TableCell>
-                    <TableCell>{datetime}</TableCell>
-                  </TableRow>
-                );
-              })}
+                  return (
+                    <TableRow hover key={match.id} selected={isSelected}>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={isSelected}
+                          onChange={(event) => {
+                            if (event.target.checked) {
+                              onSelectOne?.(match.id);
+                            } else {
+                              onDeselectOne?.(match.id);
+                            }
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Stack alignItems="center" direction="row" spacing={2}>
+                          <Avatar src={match.avatar}>{getInitials(match.home.name)}</Avatar>
+                          <Typography variant="subtitle2">{match.home.name}</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>
+                        <Stack alignItems="center" direction="row" spacing={2}>
+                          <Avatar src={match.avatar}>{getInitials(match.away.name)}</Avatar>
+                          <Typography variant="subtitle2">{match.away.name}</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>{match.score}</TableCell>
+                      <TableCell>{getWinner(match.score)}</TableCell>
+                      <TableCell>{match.date}</TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell align="center" colSpan={6}>
+                    No records found
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </Box>

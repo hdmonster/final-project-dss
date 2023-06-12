@@ -13,7 +13,7 @@ export const OverviewMostWin = (props) => {
             <Typography color="text.secondary" gutterBottom variant="overline">
               Most Win
             </Typography>
-            <Typography variant="h4">{stats.value}</Typography>
+            <Typography variant="h4">{stats.matchesWon}</Typography>
           </Stack>
           <Avatar
             sx={{
@@ -29,7 +29,7 @@ export const OverviewMostWin = (props) => {
         </Stack>
         <Stack alignItems="center" direction="row" spacing={2} sx={{ mt: 2 }}>
           <Typography color="text.secondary" variant="body">
-            {stats.team}
+            {stats.clubName}
           </Typography>
         </Stack>
       </CardContent>
@@ -38,6 +38,6 @@ export const OverviewMostWin = (props) => {
 };
 
 OverviewMostWin.propTypes = {
-  value: PropTypes.number.isRequired,
+  stats: PropTypes.object,
   sx: PropTypes.object,
 };
