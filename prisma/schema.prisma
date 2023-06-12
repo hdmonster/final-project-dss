@@ -9,3 +9,86 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+enum Position {
+  GOALKEEPER
+  OUTSIDE_BACK
+  CENTER_BACK
+  STRIKER
+  SECOND_STRIKER
+  DEFENSIVE_MIDFIELDER
+  CENTRAL_MIDFIELDER
+  WINGER
+}
+
+model Club {
+  id String @id @default(uuid())
+  name String @unique
+  logoUrl String?
+  players Player[] @relation("starting_eleven")
+  home Match[] @relation("home")
+  away Match[] @relation("away")
+  winner Match[] @relation("winner")
+}
+
+model Player {
+  id String @id @default(uuid()) 
+  clubId String
+  name String
+  position Position 
+  jerseyNumber String
+  club Club @relation("starting_eleven", fields: [clubId], references: [id])
+  goals GoalsRecord[] @relation("goals")
+  assists GoalsRecord[] @relation("assists")
+  cards CardsRecord[] @relation("cards")
+  startingElevenRecords StartingElevenRecord[] @relation("player_starting_eleven")
+
+  @@unique([clubId, name])
+}
+
+model Match {
+  id String @id @default(uuid())
+  homeId String
+  awayId String
+  winnerId String?
+  score String
+  matchDuration Int
+  date DateTime
+  home Club @relation("home", fields: [homeId], references: [id])
+  away Club @relation("away", fields: [awayId], references: [id])
+  winner Club? @relation("winner", fields: [winnerId], references: [id])
+  goals GoalsRecord[] @relation("goals_in_match")
+  cards CardsRecord[] @relation("cards_in_match")
+  startingElevenRecords StartingElevenRecord[] @relation("match_starting_eleven")
+}
+
+model StartingElevenRecord {
+  id Int @id @default(autoincrement())
+  matchId String
+  playerId String
+  inTime Int
+  outTime Int
+  match Match @relation("match_starting_eleven", fields: [matchId], references: [id])
+  player Player @relation("player_starting_eleven", fields: [playerId], references: [id])
+}
+
+model GoalsRecord {
+  id Int @id @default(autoincrement())
+  scorerId String
+  assisterId String
+  matchId String
+  time Int
+  scorer Player @relation("goals", fields: [scorerId], references: [id])
+  assister Player @relation("assists", fields: [assisterId], references: [id])
+  match Match @relation("goals_in_match", fields: [matchId], references: [id])
+}
+
+model CardsRecord {
+  id Int @id @default(autoincrement())
+  receiverId String
+  matchId String
+  time Int
+  receiver Player @relation("cards", fields: [receiverId], references: [id])
+  match Match @relation("cards_in_match", fields: [matchId], references: [id])
+}
+
